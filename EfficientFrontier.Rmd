@@ -26,8 +26,8 @@ library(timetk) # To manipulate the data series
 library(tidyr)
 library(dplyr)
 
-#Choose shares
-tick = c("GIS", "SPGI", "WMT", "GE", "PFE")
+#Choose maximum 8 different stocks
+tick = c("MMM", "AI.PA", "GIS", "SPGI", "UPS", "WMT", "GE", "PFE") #c("GIS", "SPGI", "WMT", "GE", "PFE")
 
 #Get quantitative data in tibble format
 efficient_frontier <- function(tick){
@@ -80,11 +80,11 @@ efficient_frontier <- function(tick){
     #head(log_ret_xts)
     
     #Calculate daily mean
-    mean_ret <- colMeans(log_ret_xts)
+    mean_ret <- colMeans(log_ret_xts, na.rm = TRUE)
     #print(round(mean_ret, 5))
     
     #Calculate covariance matrix and anualize it
-    cov_mat <- cov(log_ret_xts) * 252
+    cov_mat <- cov(log_ret_xts, use="complete.obs") * 252
     print(round(cov_mat,4))
     
     #Calculate weights
@@ -103,7 +103,7 @@ efficient_frontier <- function(tick){
       
       # Portfolio returns
       
-      port_ret <- sum(wts[i,] * mean_ret)
+      port_ret <- sum(wts[i,] * mean_ret, na.rm = TRUE)
       port_ret <- ((port_ret + 1)^252) - 1
       # Storing Portfolio Returns values
       port_returns[i] <- port_ret
@@ -131,7 +131,7 @@ efficient_frontier <- function(tick){
     colnames(all_wts) <- colnames(log_ret_xts)
     
     # Combing all the values together
-    portfolio_values <- tk_tbl(cbind(all_wts, round(portfolio_values, digits = 3)), preserve_index = FALSE)
+    portfolio_values <- tk_tbl(cbind(all_wts, portfolio_values), preserve_index = FALSE)
     
     #Minimum variance portfolio
     min_var <- portfolio_values[which.min(portfolio_values$Risk),]
@@ -169,6 +169,7 @@ efficient_frontier <- function(tick){
     
     #ggplotly(p)
     obj$plot_maxsr = p
+    obj$portfolio_values = portfolio_values
     
     #Efficient frontier
     p <- portfolio_values %>%
@@ -202,7 +203,7 @@ res = efficient_frontier(tick = tick)
 
 # Efficient Frontier
 If you are thinking about investing in stocks, you will come across the term "efficient frontier". The efficient frontier is the set of optimal portfolios that offer the highest expected return for a defined level of risk or the lowest risk for a given level of expected return. If you choose the portfolio with the lower risk or the higher expected return depends how risk-averse or risk-taking you are as an investor. 
-In the example below I chose `r length(tick)` shares for my portfolio. The following shares were used at the beginning: `r paste0(tick)`. You can replace the shares with any other shares you like. For more information visit https://finance.yahoo.com/. There you can also find the symbols of different shares. 
+In the example below I chose `r length(tick)` stocks for my portfolio. The following stocks were used at the beginning: `r paste0(tick)`. You can replace the stocks with any other you like. For more information visit https://finance.yahoo.com/. There you can also find the symbols of different stocks. 
 
 In the picture below you can see the "Minimum Variance Portfolio" as well as the "Tangency Portfolio". The "Minimum Variance Portfolio" gives you a relative low return, but you have a low risk. If you choose the "Tangency Portfolio" you can earn more money, but its riskier. 
 

@@ -4,8 +4,8 @@ library(timetk) # To manipulate the data series
 library(tidyr)
 library(dplyr)
 
-#Choose stocks
-tick = c("GIS", "SPGI", "WMT", "GE", "PFE")
+#Choose maximum 8 different stocks
+tick = c("MMM", "AI.PA", "GIS", "PEP", "SPGI")
 
 #Get quantitative data in tibble format
 efficient_frontier <- function(tick){
@@ -58,11 +58,11 @@ efficient_frontier <- function(tick){
     #head(log_ret_xts)
     
     #Calculate daily mean
-    mean_ret <- colMeans(log_ret_xts)
+    mean_ret <- colMeans(log_ret_xts, na.rm = TRUE)
     #print(round(mean_ret, 5))
     
     #Calculate covariance matrix and anualize it
-    cov_mat <- cov(log_ret_xts) * 252
+    cov_mat <- cov(log_ret_xts, use="complete.obs") * 252
     print(round(cov_mat,4))
     
     #Calculate weights
@@ -81,7 +81,7 @@ efficient_frontier <- function(tick){
       
       # Portfolio returns
       
-      port_ret <- sum(wts[i,] * mean_ret)
+      port_ret <- sum(wts[i,] * mean_ret, na.rm = TRUE)
       port_ret <- ((port_ret + 1)^252) - 1
       # Storing Portfolio Returns values
       port_returns[i] <- port_ret
@@ -147,6 +147,7 @@ efficient_frontier <- function(tick){
     
     #ggplotly(p)
     obj$plot_maxsr = p
+    obj$portfolio_values = portfolio_values
     
     #Efficient frontier
     p <- portfolio_values %>%
@@ -163,7 +164,7 @@ efficient_frontier <- function(tick){
       geom_point(aes(x = Risk,
                      y = Return), data = max_sr, color = 'red') +
       annotate('text', x = max_sr$Risk*1.1, y = max_sr$Return*1.1, label = "Tangency Portfolio", color = "red") +
-      annotate('text', x = min_var$Risk*1.1, y = min_var$Return*1.5, label = "Minimum Variance Portfolio", color = "orange")
+      annotate('text', x = min_var$Risk*1.2, y = min_var$Return*1.5, label = "Minimum Variance Portfolio", color = "orange")
       #
     
     #ggplotly(p)
