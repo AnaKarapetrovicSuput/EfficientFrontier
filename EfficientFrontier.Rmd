@@ -7,7 +7,6 @@ output:
     latex_engine: xelatex
     fig_caption: yes
 title: "Efficient Frontier"
-subtitle: "How should my portfolio look like?"
 author: "Ana Karapetrovic-Suput"
 date: "`r format(Sys.time(), '%d. %B %Y')`"
 ---
@@ -26,15 +25,30 @@ library(timetk) # To manipulate the data series
 library(tidyr)
 library(dplyr)
 
-#Choose maximum 8 different stocks
-tick = c("MMM", "AI.PA", "GIS", "SPGI", "UPS", "WMT", "GE", "PFE") #c("GIS", "SPGI", "WMT", "GE", "PFE")
+# Choose maximum 8 different stocks
 
-#Get quantitative data in tibble format
-efficient_frontier <- function(tick){
+tick <- c('AMZN', 'AAPL', 'NFLX', 'XOM', 'T')
+
+# Get quantitative data in tibble format
+# tick: Stocks you want to investigate
+# begin_year: First year of the period you want to investigate
+# end_year: Last year of the period you want to investigate
+efficient_frontier <- function(tick, begin_year = 2020, end_year = 2021){
+  
+  #Display an error message if you selected to many stocks
+  if (length(tick)<=1|length(tick)>8){
+    stop("Please choose between 2 and 8 different stocks")
+  }
+  
+  #Display an error message if the beginning of the examined periodis after the end
+  if (begin_year>=end_year){
+    stop("The first year has to be before the last year")
+  }
+  
   obj <- NULL
   price_data <- tq_get(tick,
-                       from = '2015-01-01',
-                       to = '2021-12-31',
+                       from = paste0(begin_year,'-01-01'),
+                       to = paste0(end_year,'-12-31'),
                        get = 'stock.prices') #Get stock price from yahoo finance
   
   #New variable "year" in price_data
@@ -55,6 +69,14 @@ efficient_frontier <- function(tick){
   means_year_min <- means_year[means_year[["year"]]==min(means_year[["year"]]),]
   means_year_max <- means_year[means_year[["year"]]==max(means_year[["year"]]),]
   selected_vars <- means_year_max[["symbol"]][means_year_max[["adjusted"]] > means_year_min[["adjusted"]]]
+  
+  #Stop the funcion if you don't have 2 or more stocks left after you dismissed them due to decreasing value
+  if (length(selected_vars)<1){
+    stop("All stocks have been dismissed, because the the value in the first year is greater than in the last.")
+  }
+  if (length(selected_vars)<=1){
+    stop("All stocks but one have been dismissed, because the the value in the first year is greater than in the last.")
+  }
   
   if(length(selected_vars)<=1){
     obj = (selected_vars)
@@ -197,6 +219,7 @@ efficient_frontier <- function(tick){
 }
 
 res = efficient_frontier(tick = tick)
+
 
 
 ```

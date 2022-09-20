@@ -74,15 +74,8 @@
   pdfcreator={LaTeX via pandoc}}
 
 \title{Efficient Frontier}
-\usepackage{etoolbox}
-\makeatletter
-\providecommand{\subtitle}[1]{% add subtitle to \maketitle
-  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
-}
-\makeatother
-\subtitle{How should my portfolio look like?}
 \author{Ana Karapetrovic-Suput}
-\date{19. September 2022}
+\date{20. September 2022}
 
 \begin{document}
 \maketitle
@@ -101,11 +94,11 @@ optimal portfolios that offer the highest expected return for a defined
 level of risk or the lowest risk for a given level of expected return.
 If you choose the portfolio with the lower risk or the higher expected
 return depends how risk-averse or risk-taking you are as an investor. In
-the example below I chose 8 shares for my portfolio. The following
-shares were used at the beginning: MMM, AI.PA, GIS, SPGI, UPS, WMT, GE,
-PFE. You can replace the shares with any other shares you like. For more
-information visit \url{https://finance.yahoo.com/}. There you can also
-find the symbols of different shares.
+the example below I chose 5 stocks for my portfolio. The following
+stocks were used at the beginning: AMZN, AAPL, NFLX, XOM, T. You can
+replace the stocks with any other you like. For more information visit
+\url{https://finance.yahoo.com/}. There you can also find the symbols of
+different stocks.
 
 In the picture below you can see the ``Minimum Variance Portfolio'' as
 well as the ``Tangency Portfolio''. The ``Minimum Variance Portfolio''
@@ -122,69 +115,18 @@ the ``Tangency Portfolio'' you can earn more money, but its riskier.
 The details for the portfolio with the lowest risk are shown below. It
 is the portfolio with the lowest variance.
 
-\begin{longtable}[]{@{}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0952}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0635}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0635}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0635}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0794}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0635}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0635}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1587}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1587}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1905}}@{}}
+\begin{longtable}[]{@{}rrrrrrr@{}}
 \caption{Minimum Variance Portfolio - Weights, Return, Risk and Sharpe
 Ratio}\tabularnewline
 \toprule()
-\begin{minipage}[b]{\linewidth}\raggedleft
-AI.PA
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-GIS
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-MMM
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-PFE
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-SPGI
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-UPS
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-WMT
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-Return
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-Risk
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-SharpeRatio
-\end{minipage} \\
+AAPL & AMZN & NFLX & XOM & Return & Risk & SharpeRatio \\
 \midrule()
 \endfirsthead
 \toprule()
-\begin{minipage}[b]{\linewidth}\raggedleft
-AI.PA
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-GIS
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-MMM
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-PFE
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-SPGI
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-UPS
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-WMT
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-Return
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-Risk
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-SharpeRatio
-\end{minipage} \\
+AAPL & AMZN & NFLX & XOM & Return & Risk & SharpeRatio \\
 \midrule()
 \endhead
-0,3 & 0,2 & 0,1 & 0,1 & 0 & 0,1 & 0,2 & 0,1008417 & 0,1420182 &
-0,7100617 \\
+0 & 0,5 & 0,2 & 0,3 & 0,224944 & 0,2717622 & 0,8277236 \\
 \bottomrule()
 \end{longtable}
 
@@ -201,68 +143,18 @@ asset compensates the investor for the risk taken. When comparing two
 assets, the one with a higher sharpe ratio appears to provide better
 return for the same risk, which is usually attractive to investors.
 
-\begin{longtable}[]{@{}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0968}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0645}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0645}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0645}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0806}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0645}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0645}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1452}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1613}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1935}}@{}}
+\begin{longtable}[]{@{}rrrrrrr@{}}
 \caption{Tangency Portfolio - Weights, Return, Risk and Sharpe
 Ratio}\tabularnewline
 \toprule()
-\begin{minipage}[b]{\linewidth}\raggedleft
-AI.PA
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-GIS
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-MMM
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-PFE
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-SPGI
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-UPS
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-WMT
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-Return
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-Risk
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-SharpeRatio
-\end{minipage} \\
+AAPL & AMZN & NFLX & XOM & Return & Risk & SharpeRatio \\
 \midrule()
 \endfirsthead
 \toprule()
-\begin{minipage}[b]{\linewidth}\raggedleft
-AI.PA
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-GIS
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-MMM
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-PFE
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-SPGI
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-UPS
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-WMT
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-Return
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-Risk
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
-SharpeRatio
-\end{minipage} \\
+AAPL & AMZN & NFLX & XOM & Return & Risk & SharpeRatio \\
 \midrule()
 \endhead
-0,1 & 0 & 0 & 0,2 & 0,6 & 0 & 0,1 & 0,217664 & 0,1981989 & 1,09821 \\
+0,9 & 0 & 0,1 & 0 & 0,5312838 & 0,3595948 & 1,477451 \\
 \bottomrule()
 \end{longtable}
 
