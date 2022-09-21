@@ -33,7 +33,7 @@ tick <- c('AMZN', 'AAPL', 'NFLX', 'XOM', 'T')
 # tick: Stocks you want to investigate
 # begin_year: First year of the period you want to investigate
 # end_year: Last year of the period you want to investigate
-efficient_frontier <- function(tick, begin_year = 2020, end_year = 2021){
+efficient_frontier <- function(tick, begin_year = 2015, end_year = 2021){
   
   #Display an error message if you selected to many stocks
   if (length(tick)<=1|length(tick)>8){
@@ -153,7 +153,7 @@ efficient_frontier <- function(tick, begin_year = 2020, end_year = 2021){
     colnames(all_wts) <- colnames(log_ret_xts)
     
     # Combing all the values together
-    portfolio_values <- tk_tbl(cbind(all_wts, portfolio_values), preserve_index = FALSE)
+    portfolio_values <- tk_tbl(cbind(all_wts, round(portfolio_values, digits = 3)), preserve_index = FALSE)
     
     #Minimum variance portfolio
     min_var <- portfolio_values[which.min(portfolio_values$Risk),]
@@ -163,7 +163,7 @@ efficient_frontier <- function(tick, begin_year = 2020, end_year = 2021){
     vars <- names(min_var)[names(min_var) %in% c("Return", "Risk", "SharpeRatio") == FALSE]
     obj$vars = vars
     p <- min_var %>%
-      gather(vars, key = Asset, ##sollte hier alles nehmen, aber es nimmt nur GIS und PFE
+      gather(vars, key = Asset, 
              value = Weights) %>%
       mutate(Asset = as.factor(Asset)) %>%
       ggplot(aes(x = Asset, y = Weights, fill = Asset)) +
@@ -225,7 +225,7 @@ res = efficient_frontier(tick = tick)
 ```
 
 # Efficient Frontier
-If you are thinking about investing in stocks, you will come across the term "efficient frontier". The efficient frontier is the set of optimal portfolios that offer the highest expected return for a defined level of risk or the lowest risk for a given level of expected return. If you choose the portfolio with the lower risk or the higher expected return depends how risk-averse or risk-taking you are as an investor. 
+If you are thinking about investing in stocks, you will come across the term "efficient frontier". The efficient frontier is the set of optimal portfolios that offer the highest expected return for a defined level of risk or the lowest risk for a given level of expected return. If you choose the portfolio with the lower risk or the higher expected return, depends on how risk-averse or risk-taking you are as an investor. 
 In the example below I chose `r length(tick)` stocks for my portfolio. The following stocks were used at the beginning: `r paste0(tick)`. You can replace the stocks with any other you like. For more information visit https://finance.yahoo.com/. There you can also find the symbols of different stocks. 
 
 In the picture below you can see the "Minimum Variance Portfolio" as well as the "Tangency Portfolio". The "Minimum Variance Portfolio" gives you a relative low return, but you have a low risk. If you choose the "Tangency Portfolio" you can earn more money, but its riskier. 
@@ -249,7 +249,7 @@ res$plot_minvar
 
 \newpage
 # Tangency Portfolio
-The details for the portfolio with the highest sharpe ratio are shown below. The Sharpe ratio seeks to characterize how well the return of an asset compensates the investor for the risk taken. When comparing two assets, the one with a higher sharpe ratio appears to provide better return for the same risk, which is usually attractive to investors.
+The details for the portfolio with the highest sharpe ratio are shown below. The sharpe ratio seeks to characterize how well the return of an asset compensates the investor for the risk taken. When comparing two assets, the one with a higher sharpe ratio provides better return for the same risk, which is usually attractive to investors.
 
 ```{r table Tangency Portfolio, echo=FALSE, message=FALSE, warning=FALSE, fig.align="center", fig.height=4, dpi=300, results="asis"}
 knitr::kable(res$max_sr, caption = "Tangency Portfolio - Weights, Return, Risk and Sharpe Ratio", format.args = list(decimal.mark = ",", big.mark = "."))

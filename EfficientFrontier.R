@@ -12,7 +12,7 @@ tick <- c('AMZN', 'AAPL', 'NFLX', 'XOM', 'T')
 # tick: Stocks you want to investigate
 # begin_year: First year of the period you want to investigate
 # end_year: Last year of the period you want to investigate
-efficient_frontier <- function(tick, begin_year = 2020, end_year = 2021){
+efficient_frontier <- function(tick, begin_year = 2015, end_year = 2021){
   
   #Display an error message if you selected to many stocks
   if (length(tick)<=1|length(tick)>8){
@@ -132,7 +132,7 @@ efficient_frontier <- function(tick, begin_year = 2020, end_year = 2021){
     colnames(all_wts) <- colnames(log_ret_xts)
     
     # Combing all the values together
-    portfolio_values <- tk_tbl(cbind(all_wts, portfolio_values), preserve_index = FALSE)
+    portfolio_values <- tk_tbl(cbind(all_wts, round(portfolio_values, digits = 3)), preserve_index = FALSE)
     
     #Minimum variance portfolio
     min_var <- portfolio_values[which.min(portfolio_values$Risk),]
@@ -142,7 +142,7 @@ efficient_frontier <- function(tick, begin_year = 2020, end_year = 2021){
     vars <- names(min_var)[names(min_var) %in% c("Return", "Risk", "SharpeRatio") == FALSE]
     obj$vars = vars
     p <- min_var %>%
-      gather(vars, key = Asset, ##sollte hier alles nehmen, aber es nimmt nur GIS und PFE
+      gather(vars, key = Asset, 
              value = Weights) %>%
       mutate(Asset = as.factor(Asset)) %>%
       ggplot(aes(x = Asset, y = Weights, fill = Asset)) +
