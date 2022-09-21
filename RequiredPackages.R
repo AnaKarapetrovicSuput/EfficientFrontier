@@ -8,3 +8,4 @@ install.packages("timetk")
 install.packages("tidyr")
 install.packages("dplyr")
 install.packages("quantmod") # Bugfix for old yahoo finance URL from package "tidyquant"
+install.packages("stringr")

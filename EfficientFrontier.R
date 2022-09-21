@@ -3,6 +3,7 @@ library(plotly) # To create interactive charts
 library(timetk) # To manipulate the data series
 library(tidyr)
 library(dplyr)
+library(stringr)
 
 # Choose maximum 8 different stocks
 
@@ -149,7 +150,9 @@ efficient_frontier <- function(tick, begin_year = 2015, end_year = 2021){
       geom_bar(stat = 'identity') +
       theme_minimal() +
       labs(x = 'Assets', y = 'Weights', title = "Minimum Variance Portfolio Weights") +
-      scale_y_continuous(labels = scales::percent) 
+      scale_y_continuous(labels = function(x){paste0(format(round(x * 100, 1), nsmall = 1,
+                                                            big.mark = ".", decimal.mark = ",",
+                                                            scientific = FALSE), "%")}) 
     
     #ggplotly(p)
     obj$plot_minvar = p
@@ -166,7 +169,9 @@ efficient_frontier <- function(tick, begin_year = 2015, end_year = 2021){
       geom_bar(stat = 'identity') +
       theme_minimal() +
       labs(x = 'Assets', y = 'Weights', title = "Tangency Portfolio Weights") +
-      scale_y_continuous(labels = scales::percent) 
+      scale_y_continuous(labels = function(x){paste0(format(round(x * 100, 1), nsmall = 1,
+                                                            big.mark = ".", decimal.mark = ",",
+                                                            scientific = FALSE), "%")}) 
     
     #ggplotly(p)
     obj$plot_maxsr = p
@@ -177,8 +182,17 @@ efficient_frontier <- function(tick, begin_year = 2015, end_year = 2021){
       ggplot(aes(x = Risk, y = Return, color = SharpeRatio)) +
       geom_point() +
       theme_classic() +
-      scale_y_continuous(labels = scales::percent) +
-      scale_x_continuous(labels = scales::percent) +
+      #Format scale of x- and y-axis with "," as decimal mark and percent
+      scale_y_continuous(labels = function(x){paste0(format(round(x * 100, 1), nsmall = 1,
+                                                big.mark = ".", decimal.mark = ",",
+                                                scientific = FALSE), "%")}) +
+      scale_x_continuous(labels = function(x){paste0(format(round(x * 100, 1), nsmall = 1,
+                                                            big.mark = ".", decimal.mark = ",",
+                                                            scientific = FALSE), "%")}) +
+      #Format scale of legend with "," as decimal mark
+      scale_colour_continuous(labels = function(x){paste0(format(round(x, 2), nsmall = 1,
+                                                       big.mark = ".", decimal.mark = ",",
+                                                       scientific = FALSE))}) +
       labs(x = 'Risk % - Measured by the standard deviation of annual returns',
            y = 'Return % - Average of annual returns',
            title = "Portfolio Optimization and Efficient Frontier") +
@@ -186,12 +200,27 @@ efficient_frontier <- function(tick, begin_year = 2015, end_year = 2021){
                      y = Return), data = min_var, color = 'orange') +
       geom_point(aes(x = Risk,
                      y = Return), data = max_sr, color = 'red') +
-      annotate('text', x = max_sr$Risk*1.1, y = max_sr$Return*1.1, label = "Tangency Portfolio", color = "red") +
-      annotate('text', x = min_var$Risk*1.2, y = min_var$Return*1.5, label = "Minimum Variance Portfolio", color = "orange")
+      annotate('text', x = max_sr$Risk*1.1, y = max_sr$Return*1.1, 
+               label = "Tangency Portfolio", color = "red") +
+      annotate('text', x = min_var$Risk*1.2, y = min_var$Return*1.5, 
+               label = "Minimum Variance Portfolio", color = "orange")
       #
     
     #ggplotly(p)
     obj$plot_efficient_frontier = p
+    
+    #Format tables minimum variance and maximum sharpe ratio
+    MinimumVariance <- 
+      c(str_replace(paste0(min_var[1:length(min_var)-1]*100, "%"), "\\.", ","), 
+        str_replace(min_var[length(min_var)], "\\.", ","))
+    names(MinimumVariance) <- names(min_var)
+    obj$MinimumVariance <- MinimumVariance
+    
+    MaxSr <- 
+      c(str_replace(paste0(max_sr[1:length(max_sr)-1]*100, "%"), "\\.", ","), 
+        str_replace(max_sr[length(max_sr)], "\\.", ","))
+    names(MaxSr) <- names(max_sr)
+    obj$MaxSr <- MaxSr
   }
   return(obj)
   
