@@ -179,8 +179,8 @@ efficient_frontier <- function(tick, begin_year = 2015, end_year = 2021){
       theme_classic() +
       scale_y_continuous(labels = scales::percent) +
       scale_x_continuous(labels = scales::percent) +
-      labs(x = 'Annualized Risk',
-           y = 'Annualized Returns',
+      labs(x = 'Risk % - Measured by the standard deviation of annual returns',
+           y = 'Return % - Average of annual returns',
            title = "Portfolio Optimization and Efficient Frontier") +
       geom_point(aes(x = Risk, 
                      y = Return), data = min_var, color = 'orange') +
